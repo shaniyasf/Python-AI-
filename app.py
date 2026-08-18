@@ -27,6 +27,9 @@ def ai_agent_router():
     cmd_raw = d.get("command") or d.get("text_command")
     cmd = cmd_raw.strip().lower()
 
+    target = None
+    msg = "Command Unknown / Failed"
+
     if "youtube" in cmd:
         q = cmd
         patterns = [
@@ -58,7 +61,11 @@ def ai_agent_router():
         parts = re.split(r'\b(type|write|saying|message|content|with body)\b', clean_cmd)
         recip_part = parts[0].strip()
 
-        recip_part = re.sub(r'^(update\s+to|to|send\s+to|and\s+update\s+to)\s*', '', recip_part).strip()
+        recip_part = re.sub(
+            r'^(update\s+to|to|send\s+to|and\s+update\s+to)\s*',
+            '',
+            recip_part
+        ).strip()
 
         if len(parts) > 1:
             body = parts[-1].strip()
@@ -72,6 +79,10 @@ def ai_agent_router():
         params = urllib.parse.urlencode({"to": to, "body": body})
         target = f"{base}&{params}"
         msg = f"Drafting email to {to}"
+
+    elif "google" in cmd:
+        target = "https://www.google.com"
+        msg = "Opening Google"
 
     return jsonify({
         "success": True,
