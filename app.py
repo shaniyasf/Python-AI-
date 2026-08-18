@@ -45,7 +45,7 @@ def ai_agent_router():
         q = q.strip()
         vid = get_vid(q)
         if vid:
-            target = f"https://www.youtube.com/embed/{vid}?autoplay=1&mute=1"
+            target = f"https://www.youtube.com/watch?v={vid}"
             msg = f"Playing {q}"
 
     elif any(k in cmd for k in ["gmail", "email", "mail", "message"]):
